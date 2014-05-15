@@ -1,0 +1,101 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_ventas.html" %}
+{% load l10n %}
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+    <script type="text/javascript">
+        var datos = {{ categoria_nombre_list|safe }};
+        $(function() {
+            $('#categoria_nombre').typeahead({
+                    source: datos, items:5
+            });
+        });
+    </script>
+    <div class="container-fluid dw-shell-view">
+        <div class="page-header">
+            <h4>{{ page_module }} | <small>{{ page_title }}</small></h4>
+        </div>
+        <form action="" method="post" id="form" class="dw-validate js-remote dw-form dw-validate form-vertical" data-to="dw-shell-content" name="form">
+            {% csrf_token %}
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "CODIGO" %}<span class="req"> *</span></label>
+                        <input id="codigox" name="codigox" type="text" value="{{ d.codigo }}" class="field text input-xlarge input-required mask-alphanum show-error" required="required">
+                        <p class="help-block"> <span class="help-error" id="err_codigox"></span></p>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "DESCRIPCION" %}<span class="req"> *</span></label>
+                        <input id="descripcion" name="descripcion" type="text" value="{{ d.descripcion }}" class="field text input-xlarge input-required mask-alphanum show-error" required="required">
+                        <p class="help-block"> <span class="help-error" id="err_descripcion"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                
+                <div class="span4">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "PRECIO VENTA" %}<span class="req"> {{ 2.3|unlocalize }}*</span></label>
+                        <input id="precio_venta" name="precio_venta" type="text" value="{{ d.precio_venta|unlocalize }}" class="field input-large input-required mask-pnum show-error" required="required">
+                        <p class="help-block"> <span class="help-error" id="err_precio_venta"></span></p>
+                    </div>
+                </div>
+
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "CATEGORIA" %}<span class="req"> </span></label>
+                        <input id="categoria_nombre" name="categoria_nombre" type="text" value="{{ d.categoria_nombre }}" class="field text input-xlarge input-alphanum mask-alphanum show-error" autocomplete="off" >
+                        <p class="help-block"> <span class="help-error" id="err_categoria_nombre"></span></p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row-fluid">
+                <div class="span4">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "FECHA Y HORA" %}<span class="req"> </span></label>
+                        <div id="fecha_venc_div" class="input-append date">
+                        <!-- si solo quieres fecha solo agrega 'js-datepicker',asi class="js-datepicker field text... --> 
+                        <input id="fecha_venc" name="fecha_venc" type="text" value="{{ d.fecha_venc|date:"Y-m-d h:i:s" }}" class="field text mask-date input-date show-errors">
+                        <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                        <p class="help-block"> <span class="help-error" id="err_fecha_venc"></span></p>
+                        </div>
+                    </div>
+        		</div>
+                
+        	</div>
+            
+            <div class="row-fluid">
+                <div class="form-actions">
+
+                    <button type="submit" class="btn btn-success dw-text-bold" title="Guardar registro">
+                        <i class="btn-icon-only icon-save"></i> <span class="hidden-phone">{% trans "SAVE" %}</span>
+                    </button>
+
+                    <button type="button"  class="btn btn-info dw-text-bold" title="Limpiar formulario" onclick="document.getElementById('form').reset();">
+                        <i class="btn-icon-only icon-undo"></i> <span class="hidden-phone">{% trans "RESET" %}</span>
+                    </button>
+
+                    <a href="{% url 'producto_index' %}"  class="btn dw-spinner dw-ajax btn-danger dw-text-bold" title="Cancelar operación">
+                        <i class="btn-icon-only icon-ban-circle"></i> <span class="hidden-phone">{% trans "CANCEL" %}</span>
+                    </a>
+
+                 </div>
+             </div>
+             
+        </form>
+    </div>
+    <script type="text/javascript">
+      $('#fecha_venc_div').datetimepicker({
+        format: 'yyyy-MM-dd hh:mm:ss',
+        language: 'es',
+      });
+      //yyyy-MM-dd hh:mm:ss
+      //dd-MM-yyyy hh:mm:ss
+      //language: 'pt-BR',
+    </script>
+{% endblock content %}

@@ -1,0 +1,128 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_ventas.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load l10n %}
+{% load humanize %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+    {% load app_security %}
+
+    <script type="text/javascript">
+    $(function() {
+        //alert(getCookie('csrftoken'));
+        //alert($( "#csrfmiddlewaretoken" ).val());
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE }}',
+            form_search: true,
+            form_action: "{% url 'producto_index' field value %}",
+            form_load_data : 'dw-shell-content',
+            order_attr: 'class="dw-ajax dw-spinner"',
+            order_action: "{% url 'producto_index' field value %}"
+
+        });
+    });
+</script>
+
+    
+<div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }} </small></h4>
+    </div>
+    
+	<div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <a href="{% url 'producto_add' %}" class="btn dw-spinner dw-ajax btn-success dw-text-bold" title="{% trans "Agregar producto." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "NEW" %}</span></a>
+
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+		<table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse" data-search="codigo">{% trans "CODIGO" %}</th>
+                    <th class="col-collapse" data-search="descripcion">{% trans "DESCRIPCION" %}</th>
+                    <th class="col-collapse" data-search="precio_venta">{% trans "PRECIO VENTA" %}</th>
+                    <th class="col-collapse" data-search="categoria__nombre">{% trans "CATEGORIA" %}</th>
+                    <th class="col-collapse" data-search="is_active">{% trans "ACTIVO" %}</th>
+                    <th class="col-collapse" data-search="fecha_venc">{% trans "FECHA Y HORA" %}</th>
+                    <th class="btn-actions no-responsive" style="width: 200px;">{% trans "ACTIONS" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+			{% for d in producto_page %}
+				<tr>
+					<td>{{ producto_page.start_index|add:forloop.counter0 }}</td>
+                    <td>{{ d.codigo }}</td>
+                    <td>{{ d.descripcion }}</td>
+                	<td>{{ d.precio_venta|unlocalize|intcomma }}</td>
+                	<td>{{ d.categoria.nombre }}</td>
+                    
+                    <td><span class="label label-success">{{ d.is_active|yesno:'SI,NO' }}</span></td>
+                    <td>{{ d.fecha_venc|date:"d-m-Y H:i:s"  }}</td>
+                    <td>
+							
+                            <a href="{% url 'producto_edit' d.id|key:'producto_upd' %}" class="btn dw-spinner dw-ajax btn btn-small btn-info dw-text-bold" title="{% trans "Actualizar producto." %}" rel="tooltip"> <i class="btn-icon-only icon-edit"></i></a>
+
+                          
+
+                            <a href="{% url 'producto_delete' d.id|key:'producto_del' %}" class="btn dw-spinner dw-ajax btn btn-small btn-danger js-confirm dw-text-bold" confirm-title="{% trans "Eliminar producto?." %}" confirm-body="{% trans "It is safe to remove." %}<br/>{% trans "Remember that this operation can not be reversed." %}" title="{% trans "Eliminar producto?." %}" rel="tooltip"> <i class="btn-icon-only icon-ban-circle"></i></a>
+
+                    </td>
+                 </tr>
+				{% empty %}
+					{% trans "No records found" %}
+			{% endfor %}
+			</tbody>
+        </table>
+	</div>
+
+    <div class="pagination" style="height: auto !important; margin-top: 10px;">
+            <p>
+                {% trans "Total records found" %}: <b>{{ producto_page.paginator.count }}</b>
+                
+                ({% blocktrans with producto_page.number as number count producto_page.paginator.num_pages as num_pages %}{{number}}/{{num_pages}} page{% plural %}{{number}}/{{num_pages}} pages{% endblocktrans %})
+            </p>
+            
+    </div>
+    <div class="pagination">
+        <div class="pagination-left">
+            <ul>
+                
+                {% if producto_page.has_previous %}
+                    <li {% ifequal 1 producto_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'producto_index' %}?page=1"> << </a>
+                    </li>
+                    
+                    <li {% ifequal 1 producto_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'producto_index' %}?page={{ producto_page.previous_page_number }}"> < </a>
+                    </li>
+                {% endif %}
+                
+
+                {% for i in producto_page.paginator.page_range %}
+                    <li {% ifequal i producto_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'producto_index' field value order %}?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                
+                {% if producto_page.has_next %}
+                    <li {% ifequal producto_page.paginator.num_pages producto_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'producto_index' %}?page={{ producto_page.next_page_number }}"> > </a>
+                    </li>
+
+                    <li {% ifequal producto_page.paginator.num_pages producto_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'producto_index' %}?page={{ producto_page.paginator.num_pages }}"> >> </a>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </div>
+
+
+</div>
+{% endblock content %}

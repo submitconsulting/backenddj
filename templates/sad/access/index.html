@@ -1,0 +1,117 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_backend.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load humanize %}
+{% load app_security %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+    <script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE|default:"en-us" }}',
+            form_search: true,
+            form_action: "{% url 'access_index' field value %}",
+            form_load_data : 'dw-shell-content',
+            order_attr: 'class="dw-ajax dw-spinner"',
+            order_action: "{% url 'access_index' field value %}",
+
+        });
+    });
+</script>
+    
+<div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }} </small></h4>
+    </div>
+    
+	<div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+           
+
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+		<table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse" data-search="registered_at">{% trans "FECHA" %}</th>
+                    <th class="col-collapse">{% trans "HORA" %}</th>
+                    <th class="col-collapse" data-search="user__username">{% trans "USER" %}</th>
+                    <th class="col-collapse" data-search="user__profile__person__first_name">{% trans "NOMBRE" %}</th>
+                    <th class="col-collapse" data-search="user__profile__person__last_name">{% trans "APELLIDO" %}</th>
+                    <th class="col-collapse" data-search="ip">{% trans "IP" %}</th>
+                    <th class="col-collapse" data-search="access_type">{% trans "TIPO ACCESO" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+			{% for d in access_page %}
+				<tr>
+					<td>{{ access_page.start_index|add:forloop.counter0 }}</td>
+                	<td>{{ d.registered_at|date:"Y-m-d"  }}</td>
+                    <td>{{ d.registered_at|date:"H:i:s"  }}</td>
+                	<td>{{ d.user.username }}</td>
+                	<td>{{ d.user.profile.person.first_name }}</td>
+                    <td>{{ d.user.profile.person.last_name }}</td>
+                    <td>{{ d.ip  }}</td>
+                    <td><span class="label label-success">{{ d.access_type }}</span></td>
+
+                    
+                 </tr>
+				{% empty %}
+					{% trans "No records found" %}
+			{% endfor %}
+			</tbody>
+        </table>
+	</div>
+
+    <div class="pagination" style="height: auto !important; margin-top: 10px;">
+            <p>
+                {% trans "Total records found" %}: <b>{{ access_page.paginator.count }}</b>
+                
+                ({% blocktrans with access_page.number as number count access_page.paginator.num_pages as num_pages %}{{number}}/{{num_pages}} page{% plural %}{{number}}/{{num_pages}} pages{% endblocktrans %})
+            </p>
+            
+    </div>
+    <div class="pagination">
+        <div class="pagination-left">
+            <ul>
+                
+                {% if access_page.has_previous %}
+                    <li {% ifequal 1 access_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'access_index' %}?page=1"> << </a>
+                    </li>
+                    
+                    <li {% ifequal 1 access_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'access_index' %}?page={{ access_page.previous_page_number }}"> < </a>
+                    </li>
+                {% endif %}
+                
+
+                {% for i in access_page.paginator.page_range %}
+                    <li {% ifequal i access_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'access_index' field value order %}?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                
+                {% if access_page.has_next %}
+                    <li {% ifequal access_page.paginator.num_pages access_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'access_index' %}?page={{ access_page.next_page_number }}"> > </a>
+                    </li>
+
+                    <li {% ifequal access_page.paginator.num_pages access_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'access_index' %}?page={{ access_page.paginator.num_pages }}"> >> </a>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </div>
+    
+
+</div>
+
+{% endblock content %}

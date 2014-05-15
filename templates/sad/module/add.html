@@ -1,0 +1,115 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_backend.html" %}
+
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+    
+    <div class="container-fluid dw-shell-view">
+        <div class="page-header">
+            <h4>{{ page_module }} | <small>{{ page_title }}</small></h4>
+        </div>
+        <form action="" method="post" id="form" class="dw-validate js-remote dw-form dw-validate form-vertical" data-to="dw-shell-content" name="form">
+            {% csrf_token %}
+            <div class="row-fluid">
+                <div class="span4">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "MODULO" %}<span class="req"> *</span></label>
+                        <select id="module" name="module"  class="field select input-xlarge input-required input-list show-errors" required="required">
+                            <option value=""></option>
+                            {% for key,value in MODULES %}
+                                <option value="{{ key }}">{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                        <p class="help-block"> <span class="help-error" id="err_module"></span></p>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "NAME" %}<span class="req"> *</span></label>
+                        <input id="name" name="name" type="text" value="{{ d.name }}" class="field text input-xlarge input-required mask-alphanum show-error" required="required">
+                        <p class="help-block"> <span class="help-error" id="err_name"></span></p>
+                    </div>
+                </div>
+                <div class="span4">
+                    
+                </div>
+            </div>
+            
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "PERFILES" %}<span class="req"> *</span></label>
+                        <select id="groups" name="groups"  class="field select input-xlarge input-required input-list show-errors" multiple="multiple">
+                            {% for group in group_list %}
+                                <option value="{{ group.id }}">{{ group.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <p class="help-block"> <span class="help-error" id="err_groups"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "PERFILES QUE SE ASIGNARÁN POR DEFECTO A LA NUEVA CUENTA  AL MOMENTO DE REGISTRARSE POR PRIMERA VEZ" %}</label>
+                        <select id="initial_groups" name="initial_groups"  class="field select input-xlarge input-list show-errors" multiple="multiple">
+                            {% for group in group_list %}
+                                <option value="{{ group.id }}">{{ group.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <p class="help-block"> <span class="help-error" id="err_requiered_groups"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="control-group">
+                        <label class="control-label">{% trans "DESCRIPCION" %}<span class="req"> </span></label>
+                        <textarea id="description" name="description"  class="field textarea input-xrequired mask-text show-error input-xlarge">{{ d.description }}</textarea>
+                        <p class="help-block"> <span class="help-error" id="err_description"></span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row-fluid">
+                <div class="form-actions">
+
+                    <button type="submit" class="btn btn-success dw-text-bold" title="Guardar registro">
+                        <i class="btn-icon-only icon-save"></i> <span class="hidden-phone">{% trans "SAVE" %}</span>
+                    </button>
+
+                    <button type="button"  class="btn btn-info dw-text-bold" title="Limpiar formulario" onclick="document.getElementById('form').reset();">
+                        <i class="btn-icon-only icon-undo"></i> <span class="hidden-phone">{% trans "RESET" %}</span>
+                    </button>
+
+                    <a href="{% url 'module_index' %}"  class="btn dw-spinner dw-ajax btn-danger dw-text-bold" title="Cancelar operación">
+                        <i class="btn-icon-only icon-ban-circle"></i> <span class="hidden-phone">{% trans "CANCEL" %}</span>
+                    </a>
+
+                 </div>
+             </div>
+
+        </form>
+    </div>
+    <script type="text/javascript" >
+        $(function(){
+            $("#module").on('change',function(){
+                var item = $('option:selected',this).text();
+                $("#name").val(item);
+            });
+
+            jQuery.each($("#groups"), function () {
+                // "Locations" can be any label you want
+                SelectFilter.init("groups", "Perfiles", 0, "/static/admin/");
+            });
+
+             jQuery.each($("#initial_groups"), function () {
+                // "Locations" can be any label you want
+                SelectFilter.init("initial_groups", "Perfiles iniciales", 0, "/static/admin/");
+            });
+
+        });
+    </script>
+{% endblock content %}

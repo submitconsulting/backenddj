@@ -1,0 +1,137 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_backend.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load humanize %}
+{% load app_security %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+    <script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE|default:"en-us" }}',
+            form_search: true,
+            form_action: "{% url 'locality_index' field value %}",
+            form_load_data : 'dw-shell-content',
+            order_attr: 'class="dw-ajax dw-spinner"',
+            order_action: "{% url 'locality_index' field value %}",
+
+        });
+    });
+</script>
+    
+<div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }} </small></h4>
+    </div>
+    
+	<div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <a href="{% url 'locality_add' %}" class="btn dw-spinner dw-ajax btn-success dw-text-bold" title="{% trans "New locality." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "NEW" %}</span></a>
+
+            <a href="{% url 'locality_report' field value order %}"  class="btn dw-spinner dw-ajax btn-info js-report no-load dw-text-bold" title="{% trans "Print report." %}" data-report-title="{% trans "Localities report." %}" data-report-format="html" ><i class="btn-icon-only icon-print"></i> <span class="hidden-phone">{% trans "PRINT" %}</span></a>
+
+
+
+            <a href="{% url 'locality_add_form' %}" class="btn dw-spinner dw-ajax btn-success dw-text-bold" title="{% trans "New locality." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "NEW" %} CON FORM</span></a>
+
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+		<table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse">{% trans "TYPE" %}</th>
+                    <th class="col-collapse" data-search="name">{% trans "NAME" %}</th>
+                    <th class="col-collapse" data-search="msnm">{% trans "MSNM" %}</th>
+                    <th class="col-collapse" data-search="is_active">{% trans "ACTIVO" %}</th>
+                    <th class="col-collapse" data-search="date_create">{% trans "FECHA" %}</th>
+                    <th class="col-collapse" data-search="registered_at">{% trans "REGISTERED" %}</th>
+                    <th class="col-collapse" data-search="modified_in">{% trans "MODIFIED" %}</th>
+                    <th class="btn-actions no-responsive" style="width: 150px;">{% trans "ACTIONS" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+			{% for d in locality_page %}
+				<tr>
+					<td>{{ locality_page.start_index|add:forloop.counter0 }}</td>
+                	<td>{{ d.locality_type.name }}</td>
+                	<td>{{ d.name }}</td>
+                	<td>{{ d.msnm|unlocalize|intcomma }}</td>
+                    <td><span class="label label-success">{{ d.is_active|yesno:'SI,NO' }}</span></td>
+                    <td>{{ d.date_create|date:"d-m-Y"  }}</td>
+                    <td>{{ d.registered_at|date:"d-m-Y H:i:s"  }}</td>
+                    <td>{{ d.modified_in|date:"d-m-Y H:i:s"  }}</td>
+                    <td>
+                    	{% if user.is_authenticated %}
+							<a href="{% url 'locality_edit' d.id|key:'locality_upd' %}" class="btn dw-spinner dw-ajax btn btn-small btn-info dw-text-bold" title="{% trans "Update locality." %}" rel="tooltip"> <i class="btn-icon-only icon-edit"></i></a>
+
+                            {% if d.is_active %}
+                                <a href="{% url 'locality_state' 'inactivar' d.id|key:'locality_inactivar' %}" class="btn dw-spinner dw-ajax btn btn-small btn-success dw-text-bold" title="{% trans "Inactivar locality." %}" rel="tooltip"> <i class="btn-icon-only icon-flag"></i></a>
+                            {% else %}
+                                <a href="{% url 'locality_state' 'reactivar' d.id|key:'locality_reactivar' %}" class="btn dw-spinner dw-ajax btn btn-small btn-success dw-text-bold" title="{% trans "Reactivar locality." %}" rel="tooltip"> <i class="btn-icon-only icon-flag"></i></a>
+                            {% endif %}
+
+                            <a href="{% url 'locality_delete' d.id|key:'locality_del' %}" class="btn dw-spinner dw-ajax btn btn-small btn-danger js-confirm dw-text-bold" confirm-title="{% trans "Delete locality?." %}" confirm-body="{% trans "It is safe to remove." %}<br/>{% trans "Remember that this operation can not be reversed." %}" title="{% trans "Delete locality?." %}" rel="tooltip"> <i class="btn-icon-only icon-ban-circle"></i></a>
+
+						{% endif %}
+                    </td>
+                 </tr>
+				{% empty %}
+					{% trans "No records found" %}
+			{% endfor %}
+			</tbody>
+        </table>
+	</div>
+
+    <div class="pagination" style="height: auto !important; margin-top: 10px;">
+            <p>
+                {% trans "Total records found" %}: <b>{{ locality_page.paginator.count }}</b>
+                
+                ({% blocktrans with locality_page.number as number count locality_page.paginator.num_pages as num_pages %}{{number}}/{{num_pages}} page{% plural %}{{number}}/{{num_pages}} pages{% endblocktrans %})
+            </p>
+            
+    </div>
+    <div class="pagination">
+        <div class="pagination-left">
+            <ul>
+                
+                {% if locality_page.has_previous %}
+                    <li {% ifequal 1 locality_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'locality_index' %}?page=1"> << </a>
+                    </li>
+                    
+                    <li {% ifequal 1 locality_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'locality_index' %}?page={{ locality_page.previous_page_number }}"> < </a>
+                    </li>
+                {% endif %}
+                
+
+                {% for i in locality_page.paginator.page_range %}
+                    <li {% ifequal i locality_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'locality_index' field value order %}?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                
+                {% if locality_page.has_next %}
+                    <li {% ifequal locality_page.paginator.num_pages locality_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'locality_index' %}?page={{ locality_page.next_page_number }}"> > </a>
+                    </li>
+
+                    <li {% ifequal locality_page.paginator.num_pages locality_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'locality_index' %}?page={{ locality_page.paginator.num_pages }}"> >> </a>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </div>
+    {{ user.username|default:"Aún no estas registrado" }}
+    
+
+</div>
+
+{% endblock content %}

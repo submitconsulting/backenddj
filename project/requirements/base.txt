@@ -1,0 +1,8 @@
+Django==1.6.2
+#PIL==1.1.7 #o descargue PIL-1.1.7.win32-py2.7.exe de http://www.pythonware.com/products/pil/ para models.ImageField()
+# bpython==0.12
+# django-braces==1.2.2
+# django-model-utils==1.4.0
+# logutils==0.3.3
+# South==0.8.1
+##johnny-cache==1.4 # x el momento no hay para la version 1.6

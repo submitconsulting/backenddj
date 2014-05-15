@@ -1,0 +1,7 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_authenticated.html" %}
+
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+
+{% endblock content %}

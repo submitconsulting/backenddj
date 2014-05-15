@@ -1,0 +1,28 @@
+[
+    {
+        "pk": 1, 
+        "model": "params.locality", 
+        "fields": {
+        	"name": "Juliaca 1",
+        	"location": "loca ju",
+        	"utm": "utm 1",
+        	"msnm": 1000,
+        	"is_active": "True",
+            "registered_at": "2013-04-10T04:44:02Z", 
+            "modified_in": "2013-04-10T04:44:02Z"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "params.locality", 
+        "fields": {
+        	"name": "Juliaca 2",
+        	"location": "2013-04-09 23:44:02",
+        	"utm": "utm 2",
+        	"msnm": 2000,
+        	"is_active": "True",
+            "registered_at": "2013-04-10T04:44:02Z", 
+            "modified_in": "2013-04-10T04:44:02Z"
+        }
+    }
+]

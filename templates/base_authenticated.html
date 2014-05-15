@@ -1,0 +1,252 @@
+{% load staticfiles %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="noindex,nofollow" />
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap/default/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/tb/docs.css' %}">
+    <link rel="stylesheet" href="{% static 'js/google-code-prettify/prettify.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap/datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/backend/base2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/backend/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/backend/themes/default/default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/file-upload.css' %}">
+
+
+    {% block extra_css %}{% endblock extra_css %}
+
+    <script src="{% static 'js/tb/jquery.js' %}"></script>
+    <script src="{% static 'js/vendor/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
+
+    {% block extra_head_js %}{% endblock extra_head_js %}
+
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+  <!--[if lt IE 7]>
+    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+  <![endif]-->
+  <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        
+
+
+
+        <div>
+  
+  
+  <div class="row-fluid" >
+                <div class="span4"> 
+<a href="" class="xdw-ajax dw-spinner" ><img src="{% static 'img/modules/default.png' %}" alt="PROJECT"  style="height: 35px;" /><b class="brand2">BackendDJ</b></a>
+          
+
+                </div>
+               
+                <div class="pull-right">
+                    
+      <ul class="nav pull-right">
+      {% if user.is_authenticated %}
+      <li class="dropdown">
+        <a href="/accounts/login/" class="dropdown-toggle" data-toggle="dropdown">
+          <i class="icon-user"></i>
+          {{ user.username }}
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          
+          <li><a href="/accounts/profile/edit/"  class="dw-ajax dw-spinner" >{% trans "Profile" %}</a></li>
+          <li class="divider"></li>
+          <li><a href="/accounts/logout/"  class="no-load" ><i class="icon-off icon-expand"></i> {% trans "Exit" %}</a></li>
+        </ul>
+      </li>
+
+      {% else %}
+      <li><a href="/accounts/login/"><i class="icon-user"> </i> Login</a></li>
+      {% endif %}
+      </ul>
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+      </div>
+    </div>
+
+    <div id="dw-shell-load">
+      <div id="dw-console" class="container"></div>
+      <div id="dw-shell-content" class="container-fluid">
+        <noscript><h5 style="text-align: center;">¡Tu navegador no soporta Javascript!.. Activa el uso de Javascript en tu navegador.</h5><meta http-equiv="refresh" content="1; URL=sistema/login/salir/no-script/" /></noscript>
+
+        {% block content %}
+
+
+          <a href="{% url 'produccion_index' %}" class="btn btn-info">Produccion</a>
+
+          <p>Para el content principal</p>
+
+        {% endblock content %}
+      </div>
+    </div> <!-- /dw-shell-load -->
+    
+    {% include "partials/footer.html" %}
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.kumbiaphp.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.keyfilter.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.dwgrid.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.dwload.js' %}"></script>
+    <script src="{% static 'js/vendors/jsspin.min.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.spin.js' %}"></script>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="{% static 'js/vendors/html5.js' %}"></script>
+    <![endif]-->
+    <script src="{% static 'js/utils/var.js' %}"></script>
+    <script src="{% static 'js/utils/validador.js' %}"></script>
+
+    <script src="{% static 'js/tb/holder/holder.js' %}"></script>
+    <script src="{% static 'js/google-code-prettify/prettify.js' %}"></script>
+    <script src="{% static 'js/tb/application.js' %}"></script>
+
+    <script src="{% static 'js/jquery/locales/backend-dj.es-pe.js' %}"></script>
+    <script src="{% static 'js/jquery/locales/backend-dj.fr.js' %}"></script>
+
+    <!-- place project specific Javascript in this file -->
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        url = (window.location.hash.lenth >1) ? window.hash : window.location.pathname;
+        url = url.split('order')[0].split('pag')[0];
+        var activePageSubMenuId;
+        var activePageMainMenuElement;
+        $(".subnav").each(function (i) {
+          if(!$(this).hasClass("hidden")) {
+            activePageSubMenuId = $(this).attr("id");
+          } else {
+            contenedor = $(this).attr('id');
+            $(this).find('a').each(function(i) {
+              if(url==$(this).attr('href')) {
+                $('#'+contenedor).removeClass('hidden');
+                $(this).parent().addClass('active');
+                $('[data-filter="'+contenedor+'"]').each(function () {
+                  $(this).parent().addClass('main-nav-arrow active');
+                  $(this).removeClass('hidden');
+                  return false;
+                });
+                return false;
+              }
+            });
+          }
+        });
+
+        $(".dropdown-menu").each(function(i) {
+          $(this).find('a').each(function(i){
+            if(url==$(this).attr('href')) {
+              $(this).parent().addClass('active');
+              return false;
+            }
+          });
+        });
+
+        $('.dropdown-menu a').on('click', function(){
+          este = $(this);
+          $(".dropdown-menu a").each(function(i){
+            $(this).parents().removeClass('active');
+          });
+          este.parent().addClass('active');
+        });
+        //Activa el menú actual
+        $(".main-menu-link").each(function (i) {
+          if($(this).parent().hasClass("active")){
+            activePageMainMenuElement = $(this).attr("id");
+          }
+        });
+        
+        // Habilita el submenú
+        $(".main-menu-link").on('click', function(){
+          var submenu = $("#" +$(this).attr("data-filter"));
+          $(".subnav").each(function (i) {
+            $(this).attr("class","subnav hidden");
+          });
+          submenu.attr("class", "subnav");
+          $(".main-menu-link").each(function(i) {
+            $(this).parent().removeClass("main-nav-arrow");
+          });
+          $(this).parent().addClass("main-nav-arrow");
+        });
+
+        //Activa el submenú actual
+        $('.subnav a').on('click', function(){
+          este = $(this);
+          $(".subnav li").removeClass('active');
+          $(".main-menu-link").parent().removeClass('active');
+          este.parent().addClass('active');
+          $('.main-nav-arrow').addClass('active');
+          //este.parents('div.subnav').removeClass('hidden');
+          //$(this).parent().addClass("main-nav-arrow");
+        });
+
+        //Activa el menú manualmente
+        $('.main-menu-link').on('click', function(){
+          if($(this).attr('href').length > 2) {
+            $(".main-menu-link").parent().removeClass('active');
+            $(this).parent().addClass('active');
+          }
+        });
+        //Activa el submenú2 actual
+      });
+
+      $(function() { 
+        $("[rel=tooltip]").tooltip();
+      });
+    </script>
+    {% block extra_js %}
+    <!--upload cuando carga con ajax de debe cargar al final-->
+    <script src="{% static 'js/jquery/ui/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery-file-upload/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery-file-upload/jquery.fileupload-fp.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery-file-upload/jquery.fileupload-ui.js' %}"></script>
+    <!--[if gte IE 8]><script src="{% static 'js/jquery/jquery-file-upload/cors/jquery.xdr-transport.js' %}"></script> <![endif]-->
+    <!--end upload -->
+    {% endblock extra_js %}
+
+
+    <!-- Cambiar language para los dialogs de confirm y reportes de jquery.kumbiaphp.js-->
+    <script type="text/javascript">
+    $(function() {
+      $.KumbiaPHP.setLanguage('{{ LANGUAGE_CODE }}');//es-pe
+    
+    });
+    </script>
+  </body>
+</html>
+

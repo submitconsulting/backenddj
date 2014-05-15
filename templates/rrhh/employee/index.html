@@ -1,0 +1,124 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_pro.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load app_security %}
+
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+
+    <script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE }}',
+            form_search: true,
+            form_action: "{% url 'employee_index' field value %}",
+            form_load_data : 'dw-shell-content',
+            order_attr: 'class="dw-ajax dw-spinner"',
+            order_action: "{% url 'employee_index' field value %}"
+        });
+    });
+</script>
+    
+<div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }} </small></h4>
+    </div>
+    
+	<div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <a href="{% url 'employee_add' %}" class="btn dw-spinner btn-success dw-text-bold" title="{% trans "Agregar employee." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "NEW" %}</span></a>
+			
+			<a href="/rrhh/employee/person_search" class="btn dw-spinner dw-ajax btn-success dw-text-bold" title="{% trans "Agregar employee." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "AGREGAR DESDE PERSON" %}</span></a>
+			
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+		<table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse" data-search="codigo">{% trans "CODIGO" %}</th>
+                    <th class="col-collapse" data-search="person__first_name">{% trans "NOMBRE" %}</th>
+                    <th class="col-collapse" data-search="person__last_name">{% trans "APELLIDO" %}</th>
+                    <th class="col-collapse">{% trans "IDENTIFICACION" %}</th>
+                    
+                    <th class="col-collapse" data-search="contrato_vigente">{% trans "ACT." %}</th>
+                    <th class="btn-actions no-responsive" style="width: 200px;">{% trans "ACTIONS" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+			{% for d in employee_page %}
+				<tr>
+					<td>{{ employee_page.start_index|add:forloop.counter0 }}</td>
+                    <td>{{ d.codigo }}</td>
+                    <td>{{ d.person.first_name }}</td>
+                    <td>{{ d.person.last_name }}</td>
+                    <td>{{ d.person.get_identity_type_display }}{{ d.person.identity_num|add:'' }}</td>
+                    <td><span class="label label-success">{{ d.contrato_vigente|yesno:'SI,NO' }}</span></td>
+                    
+                    <td>
+							
+                            <a href="{% url 'employee_choice' d.id|key:'employee_upd' %}" class="btn dw-spinner btn btn-small btn-info dw-text-bold" title="{% trans "Actualizar employee." %}" rel="tooltip"> <i class="btn-icon-only icon-edit"></i></a>
+
+                          
+
+                            <a href="{% url 'employee_delete' d.id|key:'employee_del' %}" class="btn dw-spinner dw-ajax btn btn-small btn-danger js-confirm dw-text-bold" confirm-title="{% trans "Eliminar employee?." %}" confirm-body="{% trans "It is safe to remove." %}<br/>{% trans "Remember that this operation can not be reversed." %}" title="{% trans "Eliminar employee?." %}" rel="tooltip"> <i class="btn-icon-only icon-ban-circle"></i></a>
+
+                    </td>
+                 </tr>
+				{% empty %}
+					{% trans "No records found" %}
+			{% endfor %}
+			</tbody>
+        </table>
+	</div>
+
+    <div class="pagination" style="height: auto !important; margin-top: 10px;">
+            <p>
+                {% trans "Total records found" %}: <b>{{ employee_page.paginator.count }}</b>
+                
+                ({% blocktrans with employee_page.number as number count employee_page.paginator.num_pages as num_pages %}{{number}}/{{num_pages}} page{% plural %}{{number}}/{{num_pages}} pages{% endblocktrans %})
+            </p>
+            
+    </div>
+    <div class="pagination">
+        <div class="pagination-left">
+            <ul>
+                
+                {% if employee_page.has_previous %}
+                    <li {% ifequal 1 employee_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'employee_index' %}?page=1"> << </a>
+                    </li>
+                    
+                    <li {% ifequal 1 employee_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'employee_index' %}?page={{ employee_page.previous_page_number }}"> < </a>
+                    </li>
+                {% endif %}
+                
+
+                {% for i in employee_page.paginator.page_range %}
+                    <li {% ifequal i employee_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'employee_index' field value order %}?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                
+                {% if employee_page.has_next %}
+                    <li {% ifequal employee_page.paginator.num_pages employee_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'employee_index' %}?page={{ employee_page.next_page_number }}"> > </a>
+                    </li>
+
+                    <li {% ifequal employee_page.paginator.num_pages employee_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'employee_index' %}?page={{ employee_page.paginator.num_pages }}"> >> </a>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </div>
+
+
+</div>
+{% endblock content %}

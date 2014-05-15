@@ -1,0 +1,61 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_backend.html" %}
+
+{% load i18n %}
+{% load app_security %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+
+    <script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE }}',
+
+        });
+    });
+    </script>
+    
+    <div class="container-fluid dw-shell-view">
+        <div class="page-header">
+            <h4>{{ page_module }} | <small>{{ page_title }}</small></h4>
+        </div>
+        
+        <div class="btn-toolbar btn-toolbar-top">
+            <div class="btn-actions">
+                <a href="{% url 'solution_add' %}" class="btn dw-spinner dw-ajax btn-success dw-text-bold" title="{% trans "Agregar solución." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "NEW" %}</span></a>
+            </div>
+        </div>
+
+        <div class="dw-overflow" id="data-result">
+            <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="col-collapse" data-search="name">{% trans "SOLUCION" %}</th>
+                        <th class="col-collapse">{% trans "DESCRIPCION" %}</th>
+                        <th class="col-collapse">{% trans "ACTIVO" %}</th>
+                        <th class="btn-actions no-responsive" style="width: 100px;">{% trans "ACTIONS" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for d in solution_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ d.name|escape }}</td>
+                        <td>{{ d.description|add:''  }}</td>
+                        <td>{{ d.is_active|yesno:'SI,NO' }}</td>
+                        <td>
+                            <a href="{% url 'solution_edit' d.id|key:'solution_upd' %}" class="btn dw-spinner dw-ajax btn btn-small btn-info dw-text-bold" title="{% trans "Actualizar solución." %}" rel="tooltip"> <i class="btn-icon-only icon-edit"></i></a>
+                            <a href="{% url 'solution_delete' d.id|key:'solution_del' %}" class="btn dw-spinner dw-ajax btn btn-small btn-danger js-confirm dw-text-bold" confirm-title="{% trans "¿Eliminar solución?." %}" confirm-body="{% trans "It is safe to remove." %}<br/>{% trans "Remember that this operation can not be reversed." %}" title="{% trans "¿Eliminar solución?." %}" rel="tooltip"> <i class="btn-icon-only icon-ban-circle"></i></a>
+                        </td>
+                     </tr>
+                    {% empty %}
+                        {% trans "No records found" %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock content %}

@@ -1,0 +1,299 @@
+{% load staticfiles %}
+{% load i18n %}
+{% load user_menu %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="noindex,nofollow" />
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap/default/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/tb/docs.css' %}">
+    <link rel="stylesheet" href="{% static 'js/google-code-prettify/prettify.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap/datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/backend/base2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/backend/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/backend/themes/default/default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/file-upload.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap-fileupload.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap-fileupload.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+    {% block extra_css %}{% endblock extra_css %}
+
+    <script src="{% static 'js/tb/jquery.js' %}"></script>
+    <script src="{% static 'js/vendor/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
+
+
+    {% block extra_head_js %}{% endblock extra_head_js %}
+
+
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+ 
+
+    {% load_menu request 'PRO' %}
+
+    {% include "partials/pro/header.html" %}
+
+
+    <div id="dw-shell-load">
+      <div id="dw-console" class="container"></div>
+      <div id="dw-shell-content" class="container-fluid">
+        <noscript><h5 style="text-align: center;">¡Tu navegador no soporta Javascript!.. Activa el uso de Javascript en tu navegador.</h5><meta http-equiv="refresh" content="1; URL=sistema/login/salir/no-script/" /></noscript>
+
+
+
+
+
+
+
+
+
+    <!-- trabajar con sidebar-->
+    <div class="row">
+
+        <div class="span3 bs-docs-sidebar">
+          <center>
+            {% block imagen %}
+            <div>
+              <a href="/rrhh/employee/edit/#tab3" data-toggle="tab" class="dw-ajax dw-spinner subnav2">
+            <img src="{{ MEDIA_URL }}{{ d.photo }}" alt="PROJECT"  style="height: 80px;" id="img-side"/>
+            <br>
+            Cambiar foto</a>
+            </div>
+            
+
+            <div>
+              <font size="+2">
+            Grupo: {{ d.grupo }}  -   Código: {{ d.codigo }}
+             </font>
+            </div>
+            <div>
+            <font size="+2">
+            Sexo : {{ d.sexo }}
+            </font>
+            </div>
+            {% endblock imagen %}
+            
+          </center>
+          
+          {% include "partials/pro/side.html" %}
+
+         
+        </div>
+
+        <div id="dw-shell-content2" class="span9" style="width=100%">
+            {% block content %}
+                <p>Para el contenido del menú sidebar</p>
+            {% endblock content %}
+        </div>
+    </div>
+
+    <script type="text/javascript">              
+        $(document).ready(function() {
+            //Activa el submenú2 actual
+            $('.subnav2 a').on('click', function(){
+                este = $(this);
+                $(".subnav2 li").removeClass('active');
+                //$(".main-menu-link").parent().removeClass('active');
+                este.parent().addClass('active');
+                //$('.main-nav-arrow').addClass('active');
+                //este.parents('div.subnav').removeClass('hidden');
+                //$(this).parent().addClass("main-nav-arrow");
+            });
+        });
+        
+        
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div> <!-- /dw-shell-load -->
+    {% include "partials/footer.html" %}
+  
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap-datepicker.js' %}"></script>
+
+    <script src="{% static 'js/bootstrap/bootstrap-fileupload.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap-fileupload.min.js' %}"></script>
+    
+    <script src="{% static 'js/jquery/jquery.kumbiaphp.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.keyfilter.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.dwgrid.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.dwload.js' %}"></script>
+    <script src="{% static 'js/vendors/jsspin.min.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.spin.js' %}"></script>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="{% static 'js/vendors/html5.js' %}"></script>
+    <![endif]-->
+    <script src="{% static 'js/utils/var.js' %}"></script>
+    <script src="{% static 'js/utils/validador.js' %}"></script>
+
+    <script src="{% static 'js/tb/holder/holder.js' %}"></script>
+    <script src="{% static 'js/google-code-prettify/prettify.js' %}"></script>
+    <script src="{% static 'js/tb/application.js' %}"></script>
+
+
+
+
+    <script src="{% static 'js/jquery/locales/backend-dj.es-pe.js' %}"></script>
+    <script src="{% static 'js/jquery/locales/backend-dj.fr.js' %}"></script>
+
+
+
+
+
+  
+    <!-- place project specific Javascript in this file -->
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        url = (window.location.hash.lenth >1) ? window.hash : window.location.pathname;
+        url = url.split('order')[0].split('pag')[0];
+        var activePageSubMenuId;
+        var activePageMainMenuElement;
+        $(".subnav").each(function (i) {
+          if(!$(this).hasClass("hidden")) {
+            activePageSubMenuId = $(this).attr("id");
+          } else {
+            contenedor = $(this).attr('id');
+            $(this).find('a').each(function(i) {
+              if(url==$(this).attr('href')) {
+                $('#'+contenedor).removeClass('hidden');
+                $(this).parent().addClass('active');
+                $('[data-filter="'+contenedor+'"]').each(function () {
+                  $(this).parent().addClass('main-nav-arrow active');
+                  $(this).removeClass('hidden');
+                  return false;
+                });
+                return false;
+              }
+            });
+          }
+        });
+
+        $(".dropdown-menu").each(function(i) {
+          $(this).find('a').each(function(i){
+            if(url==$(this).attr('href')) {
+              $(this).parent().addClass('active');
+              return false;
+            }
+          });
+        });
+        $('.dropdown-menu a').on('click', function(){
+          este = $(this);
+          $(".dropdown-menu a").each(function(i){
+            $(this).parents().removeClass('active');
+          });
+          este.parent().addClass('active');
+        });
+
+        //Activa el menú actual
+        $(".main-menu-link").each(function (i) {
+          if($(this).parent().hasClass("active")){
+            activePageMainMenuElement = $(this).attr("id");
+          }
+        });
+
+        // Habilita el submenú
+
+        $(".main-menu-link").on('click', function(){
+          var submenu = $("#" +$(this).attr("data-filter"));
+          $(".subnav").each(function (i) {
+            $(this).attr("class","subnav hidden");
+          });
+
+          submenu.attr("class", "subnav");
+          $(".main-menu-link").each(function(i) {
+            $(this).parent().removeClass("main-nav-arrow");
+          });
+
+          $(this).parent().addClass("main-nav-arrow");
+        });
+
+        //Activa el submenú actual
+        $('.subnav a').on('click', function(){
+          este = $(this);
+          $(".subnav li").removeClass('active');
+          $(".main-menu-link").parent().removeClass('active');
+          este.parent().addClass('active');
+          $('.main-nav-arrow').addClass('active');
+          //este.parents('div.subnav').removeClass('hidden');
+          //$(this).parent().addClass("main-nav-arrow");
+        });
+
+        //Activa el menú manualmente
+        $('.main-menu-link').on('click', function(){
+          if($(this).attr('href').length > 2) {
+            $(".main-menu-link").parent().removeClass('active');
+            $(this).parent().addClass('active');
+          }
+        });
+
+        //Activa el submenú2 actual
+      });
+
+      $(function() {
+        $("[rel=tooltip]").tooltip();
+      });
+
+    </script>
+
+    <!--select multiple del admin de django-->
+    <script src="{% static 'admin/js/core.js' %}"></script>
+    <script src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+    <script src="{% static 'admin/js/jquery.js' %}"></script>
+    <script src="{% static 'admin/js/jquery.init.js' %}"></script>
+    <script src="{% static 'admin/js/actions.js' %}"></script>
+
+    <script src="{% static 'admin/js/SelectBox.js' %}"></script>
+    <script src="{% static 'admin/js/SelectFilter2.js' %}"></script>
+    <!--end select -->
+
+    
+
+      {% block extra_js %}
+    <!--upload cuando carga con ajax de debe cargar al final-->
+    <script src="{% static 'js/jquery/ui/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery-file-upload/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery-file-upload/jquery.fileupload-fp.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery-file-upload/jquery.fileupload-ui.js' %}"></script>
+    <!--[if gte IE 8]><script src="{% static 'js/jquery/jquery-file-upload/cors/jquery.xdr-transport.js' %}"></script> <![endif]-->
+    <!--end upload -->
+      {% endblock extra_js %}
+
+    <!-- Cambiar language para los dialogs de confirm y reportes de jquery.kumbiaphp.js-->
+    <script type="text/javascript">
+    $(function() {
+      $.KumbiaPHP.setLanguage('{{ LANGUAGE_CODE }}');//es-pe
+    
+    });
+    </script>
+  </body>
+</html>

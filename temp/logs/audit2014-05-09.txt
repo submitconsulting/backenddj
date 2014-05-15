@@ -1,0 +1,7 @@
+[2014-05-09 05:28:24,806][ERROR] [sistema] [/accounts/profile/edit/][admin][127.0.0.1] Headquar matching query does not exist. 
+[2014-05-09 05:28:31,894][ERROR] [sistema] [/accounts/profile/edit/][admin][127.0.0.1] Headquar matching query does not exist. 
+[2014-05-09 05:29:11,418][ERROR] [sistema] [/accounts/profile/edit/][admin][127.0.0.1] Headquar matching query does not exist. 
+[2014-05-09 05:31:06,592][ERROR] [sistema] [/accounts/profile/edit/][admin][127.0.0.1] Headquar matching query does not exist. 
+[2014-05-09 05:31:28,766][ERROR] [sistema] [/accounts/profile/edit/][admin][127.0.0.1] Headquar matching query does not exist. 
+[2014-05-09 05:31:33,535][ERROR] [sistema] [/accounts/profile/edit/][admin][127.0.0.1] Headquar matching query does not exist. 
+[2014-05-09 05:43:21,907][WARNING] [sistema] [/accounts/profile/edit/][AnonymousUser][127.0.0.1] Tu no estás autenticado 

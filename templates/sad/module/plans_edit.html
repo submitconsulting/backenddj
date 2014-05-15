@@ -1,0 +1,91 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_backend.html" %}
+
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+
+    <script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE }}',
+
+        });
+    });
+    </script>
+    
+<div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }}</small></h4>
+    </div>
+    
+	
+    <form action="" method="post" id="form" class="dw-validate js-remote dw-form dw-validate form-vertical" data-to="dw-shell-content" name="form">
+        {% csrf_token %}
+    <div class="dw-overflow" id="data-result">
+		<table class="table table-bordered table-hover table-striped table-condensed">
+            <thead>
+                
+                <tr>
+                    <th rowspan="2" class="no-responsive dw-text-middle">#</th>
+                    <th rowspan="2" class="no-responsive dw-text-middle">MODULO</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">DESCRIPCION</th>
+                    <th colspan="{{ solution_list_len }}" class="no-responsive dw-text-center">PLANES</th>
+                </tr>
+                <tr>
+                    {% for d in solution_list %}
+                        <th class="no-responsive dw-text-center">{{ d.name }}</th>
+                    {% endfor %}
+                </tr>    
+            </thead>
+            <tbody>
+			{% for d in module_list %}
+				<tr>
+					<td>{{ forloop.counter }}</td>
+                    <td>{{ d  }}</td>
+                	<td>{{ d.name }}</td>
+                    {% for solution in solution_list %}
+                        {% with d.id|stringformat:"s" as d_id_to_str %}
+                        {% with solution.id|stringformat:"s"|add:'-'|add:d_id_to_str as compa %}
+                        <td>
+                            {% if compa in privilegios %}
+                            <input id="privilegios" name="privilegios" type="checkbox" value="{{ solution.id }}-{{ d.id }}" checked="checked" />
+                            {% else %}
+                            <input id="privilegios" name="privilegios" type="checkbox" value="{{ solution.id }}-{{ d.id }}" />
+                            {% endif %}
+                            
+                        </td>
+                        {% endwith %}
+                        {% endwith %}
+                    {% endfor %}
+                 </tr>
+				{% empty %}
+					{% trans "No records found" %}
+			{% endfor %}
+			</tbody>
+        </table>
+	</div>
+    <input id="old_privilegios" name="old_privilegios" type="hidden" value="{{ privilegios|join:',' }}" /> 
+    <div class="row-fluid">
+                <div class="form-actions">
+                    
+                    <button type="submit" class="btn btn-success dw-text-bold" title="Guardar registro">
+                        <i class="btn-icon-only icon-save"></i> <span class="hidden-phone">{% trans "SAVE" %}</span>
+                    </button>
+                    
+                    <button type="button"  class="btn btn-info dw-text-bold" title="Limpiar formulario" onclick="document.getElementById('form').reset();">
+                        <i class="btn-icon-only icon-undo"></i> <span class="hidden-phone">{% trans "RESET" %}</span>
+                    </button>
+                    
+                    <a href="{% url 'module_plans_edit' %}"  class="btn dw-spinner dw-ajax btn-danger dw-text-bold" title="Cancelar operación">
+                        <i class="btn-icon-only icon-ban-circle"></i> <span class="hidden-phone">{% trans "CANCEL" %}</span>
+                    </a>
+                    
+                 </div>
+             </div>
+    </form>
+
+    
+</div>
+{% endblock content %}

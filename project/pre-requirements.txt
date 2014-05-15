@@ -1,0 +1,8 @@
+python-2.7.6.msi
+C:\pypa-setuptools-xxxxxxxxx>python setup.py install # se descarga de https://pypi.python.org/pypi/setuptools#downloads
+easy_install pip
+C:\docutils-0.11>python setup.py install # se desacarga de http://docutils.sourceforge.net/
+
+#pip install -r requirements.txt
+#pip install -r project/requirements/test.txt
+

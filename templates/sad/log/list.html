@@ -1,0 +1,97 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_backend.html" %}
+
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+    
+    <div class="container-fluid dw-shell-view">
+        <div class="page-header">
+            <h4>{{ page_module }} | <small>{{ page_title }}</small></h4>
+        </div>
+        <div class="dw-overflow" id="data-result">
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse">{% trans "FECHA" %}</th>
+                    <th class="col-collapse">{% trans "TIPO" %}</th>
+                    <th class="col-collapse">{% trans "USUARIO" %}</th>
+                    <th class="col-collapse">{% trans "IP" %}</th>
+                    <th class="col-collapse">{% trans "DESCRIPCION" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for d in audit_page %}
+                <tr>
+                    <td>{{ audit_page.start_index|add:forloop.counter0 }}</td>
+
+                    <td>{{ d.date }} 
+                    </td>
+                    <td>{{ d.type|safe }}
+                        
+
+                    </td>
+                    <td>{{ d.user }} 
+                        
+                    </td>
+                    <td>
+                        {{ d.ip }} 
+                    </td>
+                    <td>
+                        {{ d.desc }} 
+                    </td>
+                    
+                 </tr>
+                {% empty %}
+                    {% trans "No records found" %}<br>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        <div class="pagination" style="height: auto !important; margin-top: 10px;">
+            <p>
+                {% trans "Total records found" %}: <b>{{ audit_page.paginator.count }}</b>
+                
+                ({% blocktrans with audit_page.number as number count audit_page.paginator.num_pages as num_pages %}{{number}}/{{num_pages}} page{% plural %}{{number}}/{{num_pages}} pages{% endblocktrans %})
+            </p>
+            
+    </div>
+    <div class="pagination">
+        <div class="pagination-left">
+            <ul>
+                
+                {% if audit_page.has_previous %}
+                    <li {% ifequal 1 audit_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'audit_list' day %}?page=1"> << </a>
+                    </li>
+                    
+                    <li {% ifequal 1 audit_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'audit_list' day %}?page={{ audit_page.previous_page_number }}"> < </a>
+                    </li>
+                {% endif %}
+                
+
+                {% for i in audit_page.paginator.page_range %}
+                    <li {% ifequal i audit_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'audit_list' day %}?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                
+                {% if audit_page.has_next %}
+                    <li {% ifequal audit_page.paginator.num_pages audit_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'audit_list' day %}?page={{ audit_page.next_page_number }}"> > </a>
+                    </li>
+
+                    <li {% ifequal audit_page.paginator.num_pages audit_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'audit_list' day %}?page={{ audit_page.paginator.num_pages }}"> >> </a>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </div>
+
+    </div>
+{% endblock content %}

@@ -1,0 +1,67 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_pro.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load app_security %}
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE }}',
+            form_search: true,
+            form_action: "{% url 'employee_person_search' field value %}",
+            form_load_data : 'dw-shell-content',
+        });
+    });
+</script>
+
+    <div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }}</small></h4>
+    </div>
+    
+	<div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+		<table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse" data-search="first_name">{% trans "NOMBRES" %}</th>
+                    <th class="col-collapse" data-search="last_name">{% trans "APELLIDOS" %}</th>
+                    <th class="col-collapse">{% trans "DOCUMENTO" %}</th>
+                    <th class="btn-actions no-responsive" style="width: 200px;">{% trans "ACTIONS" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+			{% for d in person_list %}
+				<tr>
+					<td>{{ forloop.counter }}</td>
+                	<td>{{ d.first_name }}                    </td>
+                	<td>{{ d.last_name }}                     </td>
+                	<td>{{ d.identity_type }}: {{ d.identity_num }}  </td>
+                    <td>
+                        <a href="{% url 'employee_add_from_person' d.id|key:'employee_add_from_person' %}" class="btn dw-spinner dw-ajax btn btn-small btn-success dw-text-bold" title="{% trans "Agregar a empleado." %}" rel="tooltip"> <i class="btn-icon-only icon-check"></i></a>
+                    </td>
+                    
+                 </tr>
+				{% empty %}
+					{% trans "No records found" %}<br>
+			{% endfor %}
+			</tbody>
+        </table>
+	</div>
+
+
+
+
+</div>
+{% endblock %}

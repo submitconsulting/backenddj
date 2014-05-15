@@ -1,0 +1,248 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <asullom@gmail.com>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-21 14:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\mod_config\params\views.py:19 .\templates\base.html.py:79 
+# >django-admin.py compilemessages
+# >python manage.py runserver
+# ver https://docs.djangoproject.com/en/dev/topics/i18n/translation/#gettext-on-windows
+#gettext-tools_0.18.1.1-2_win32.zip 
+
+#example
+msgid "Categories"
+msgstr "Categorías en es Perú"
+
+msgid "Progress: %(percent_translated)s"
+msgstr "Progreso: %(percent_translated)s"
+
+msgid "%(more_count)s more"
+msgid_plural "%(more_count)s mores"
+msgstr[0] "%(more_count)s más"
+msgstr[1] "%(more_count)s más pural"
+
+msgid "%(hits)s/%(message_number)s message"
+msgid_plural "%(hits)s/%(message_number)s messages"
+msgstr[0] "%(hits)s/%(message_number)s mensaje singular"
+msgstr[1] "%(hits)s/%(message_number)s mensajes plural"
+#fin example
+
+#buttons
+msgid "Sign up"
+msgstr "Crear cuenta"
+
+
+msgid "SAVE"
+msgstr "GUARDAR"
+
+msgid "CANCEL"
+msgstr "CANCELAR"
+
+msgid "RESET"
+msgstr "LIMPIAR"
+
+msgid "SEARCH"
+msgstr "BUSCAR"
+
+msgid "PRINT"
+msgstr "IMPRIMIR"
+
+msgid "NEW"
+msgstr "AGREGAR"
+
+msgid "COLS"
+msgstr "COLUMNAS"
+
+#fin buttons
+
+#titles
+msgid "ACTIONS"
+msgstr "ACCIONES"
+
+msgid "Print report."
+msgstr "Imprimir reporte."
+
+msgid "Remember that this operation can not be reversed."
+msgstr "Recuerda que esta operación no se puede reversar."
+
+msgid "It is safe to remove."
+msgstr "Está seguro de eliminar."
+
+msgid "Total records found"
+msgstr "Total registros encontrados"
+
+msgid "No records found"
+msgstr "No se encontraron registros"
+
+msgid "%(number)s/%(num_pages)s page"
+msgid_plural "%(number)s/%(num_pages)s pages"
+msgstr[0] "%(number)s/%(num_pages)s página"
+msgstr[1] "%(number)s/%(num_pages)s páginas"
+
+#fin titles
+
+#Locality
+msgid "Locality"
+msgstr "Localidad"
+
+msgid "Locality cannot be null."
+msgstr "Localidad no puede ser nulo."
+
+msgid "Locality not found in the database."
+msgstr "Localidad no se encuentra en la database."
+
+msgid "Locality %(code)s code's already in use."
+msgstr "El código %(code)s para localidad ya existe."
+
+msgid "Locality %(name)s name's already in use."
+msgstr "El nombre %(name)s para localidad ya existe."
+
+msgid "Locality %(name)s could not be deleted because it has associated records."
+msgstr "Localidad %(name)s no puede ser eliminada debido a que tiene registros asociados."
+
+msgid "Localities list."
+msgstr "Lista de localidades."
+
+msgid "Localities report."
+msgstr "Reporte de localidades."
+
+msgid "New locality."
+msgstr "Agregar localidad."
+
+msgid "Update locality."
+msgstr "Actualizar localidad."
+
+msgid "Locality %(name)s have been inserted successfully."
+msgstr "Localidad %(name)s ha sido registrado correctamente."
+
+msgid "Locality %(name)s have been updated successfully."
+msgstr "Localidad %(name)s ha sido actualizado correctamente."
+
+msgid "Locality %(name)s have been deleted successfully."
+msgstr "Localidad %(name)s ha sido eliminado correctamente."
+
+msgid "Delete locality?."
+msgstr "¿Eliminar localidad?."
+
+msgid "TYPE"
+msgstr "TIPO"
+
+msgid "NAME"
+msgstr "NOMBRE"
+
+msgid "REGISTERED"
+msgstr "REGISTRADO"
+
+msgid "MODIFIED"
+msgstr "MODIFICADO"
+
+#emun
+
+msgid "Government"
+msgstr "Gobierno"
+
+msgid "Private"
+msgstr "Privada"
+
+msgid "Mixed"
+msgstr "Mixto"
+
+msgid "Others"
+msgstr "Otros"
+
+
+
+#Menu
+
+msgid "Choice headquar"
+msgstr "Elegir otra sede"
+
+msgid "Home page"
+msgstr "Página de inicio"
+
+msgid "Profile"
+msgstr "Perfil"
+
+msgid "Exit"
+msgstr "Salir"
+
+
+
+
+msgid "Dashboard"
+msgstr "Tablero de inicio"
+
+msgid "Account"
+msgstr "Cuenta"
+
+msgid "Association"
+msgstr "Asociacion"
+
+msgid "Enterprises"
+msgstr "Empresas"
+
+msgid "Enterprise"
+msgstr "Empresa"
+
+msgid "Headquarters"
+msgstr "Sedes"
+
+msgid "Users"
+msgstr "Usuarios"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "Resource"
+msgstr "Recursos"
+
+msgid "Profiles"
+msgstr "Perfiles"
+
+msgid "Permissions"
+msgstr "Permisos"
+
+msgid "Modules"
+msgstr "Módulos"
+
+msgid "Solutions"
+msgstr "Soluciones"
+
+msgid "Plans"
+msgstr "Planes"
+
+msgid "Menus"
+msgstr "Menús"
+
+msgid "Logs"
+msgstr "Sucesos"
+
+msgid "Audits"
+msgstr "Auditorías"
+
+msgid "Access"
+msgstr "Accesos"
+
+msgid "Tables"
+msgstr "Tablas"
+
+msgid "Params"
+msgstr "Parámetros"
+
+msgid "Localities"
+msgstr "Ciudades"

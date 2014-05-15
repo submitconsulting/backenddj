@@ -1,0 +1,141 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_backend.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load app_security %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+    
+
+    <script type="text/javascript">
+    $(function() {
+        //alert(getCookie('csrftoken'));
+        //alert($( "#csrfmiddlewaretoken" ).val());
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE }}',
+            form_search: true,
+            form_action: "{% url 'user_index' field value %}",
+            form_load_data : 'dw-shell-content',
+            order_attr: 'class="dw-ajax dw-spinner"',
+            order_action: "{% url 'user_index' field value %}"
+
+        });
+    });
+</script>
+
+    
+<div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }} </small></h4>
+    </div>
+    
+	<div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <a href="{% url 'user_add' %}" class="btn dw-spinner dw-ajax btn-success dw-text-bold" title="{% trans "Agregar user." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "NEW" %}</span></a>
+
+            <a href="/sad/user/person_search" class="btn dw-spinner dw-ajax btn-success dw-text-bold" title="{% trans "Agregar user." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "AGREGAR DESDE PERSON" %}</span></a>
+
+
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+		<table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse" data-search="is_superuser">{% trans "USER" %}</th>
+                    <th class="col-collapse" data-search="username">{% trans "LOGIN" %}</th>
+                    <th class="col-collapse" data-search="profile__person__first_name">{% trans "NOMBRE" %}</th>
+                    <th class="col-collapse" data-search="profile__person__last_name">{% trans "APELLIDO" %}</th>
+                    <th class="col-collapse">{% trans "IDENTIFICACION" %}</th>
+                    <th class="col-collapse" data-search="email">{% trans "EMAIL" %}</th>
+                    
+                    <th class="col-collapse" data-search="is_active">{% trans "ACTIVO" %}</th>
+                    <th class="btn-actions no-responsive" style="width: 200px;">{% trans "ACTIONS" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+			{% for d in user_page %}
+				<tr>
+					<td>{{ user_page.start_index|add:forloop.counter0 }}</td>
+                    <td><span class="label label-success">{{ d.is_superuser|yesno:'SUPERUSER,user' }}</span></td>
+                    <td><span class="label label-success">{{ d.username }}</span></td>
+                	<td>{{ d.profile.person.first_name }}</td>
+                	<td>{{ d.profile.person.last_name }}</td>
+                    <td>{{ d.profile.person.get_identity_type_display }}{{ d.profile.person.identity_num|add:'' }}</td>
+                    <td>{{ d.email }}</td>
+                    <td><span class="label label-success">{{ d.is_active|yesno:'SI,NO' }}</span></td>
+                    
+                    <td>
+                    	{% if user.is_authenticated %}
+							<a href="{% url 'user_view' d.id|key:'user_viw' %}" class="btn dw-spinner dw-ajax btn btn-small btn-info dw-text-bold" title="{% trans "Ver user." %}" rel="tooltip"> <i class="btn-icon-only icon-eye-open"></i></a>
+
+                            <a href="{% url 'user_edit' d.id|key:'user_upd' %}" class="btn dw-spinner dw-ajax btn btn-small btn-info dw-text-bold" title="{% trans "Actualizar user." %}" rel="tooltip"> <i class="btn-icon-only icon-edit"></i></a>
+
+                            {% if d.is_active %}
+                                <a href="{% url 'user_state' 'inactivar' d.id|key:'user_inactivar' %}" class="btn dw-spinner dw-ajax btn btn-small btn-success dw-text-bold" title="{% trans "Inactivar user." %}" rel="tooltip"> <i class="btn-icon-only icon-flag"></i></a>
+                            {% else %}
+                                <a href="{% url 'user_state' 'reactivar' d.id|key:'user_reactivar' %}" class="btn dw-spinner dw-ajax btn btn-small btn-success dw-text-bold" title="{% trans "Reactivar user." %}" rel="tooltip"> <i class="btn-icon-only icon-flag"></i></a>
+                            {% endif %}
+
+                            <a href="{% url 'user_delete' d.id|key:'user_del' %}" class="btn dw-spinner dw-ajax btn btn-small btn-danger js-confirm dw-text-bold" confirm-title="{% trans "Eliminar user?." %}" confirm-body="{% trans "It is safe to remove." %}<br/>{% trans "Remember that this operation can not be reversed." %}" title="{% trans "Eliminar user?." %}" rel="tooltip"> <i class="btn-icon-only icon-ban-circle"></i></a>
+
+
+
+						{% endif %}
+                    </td>
+                 </tr>
+				{% empty %}
+					{% trans "No records found" %}
+			{% endfor %}
+			</tbody>
+        </table>
+	</div>
+
+    <div class="pagination" style="height: auto !important; margin-top: 10px;">
+            <p>
+                {% trans "Total records found" %}: <b>{{ user_page.paginator.count }}</b>
+                
+                ({% blocktrans with user_page.number as number count user_page.paginator.num_pages as num_pages %}{{number}}/{{num_pages}} page{% plural %}{{number}}/{{num_pages}} pages{% endblocktrans %})
+            </p>
+            
+    </div>
+    <div class="pagination">
+        <div class="pagination-left">
+            <ul>
+                
+                {% if user_page.has_previous %}
+                    <li {% ifequal 1 user_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'user_index' %}?page=1"> << </a>
+                    </li>
+                    
+                    <li {% ifequal 1 user_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'user_index' %}?page={{ user_page.previous_page_number }}"> < </a>
+                    </li>
+                {% endif %}
+                
+
+                {% for i in user_page.paginator.page_range %}
+                    <li {% ifequal i user_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'user_index' field value order %}?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                
+                {% if user_page.has_next %}
+                    <li {% ifequal user_page.paginator.num_pages user_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'user_index' %}?page={{ user_page.next_page_number }}"> > </a>
+                    </li>
+
+                    <li {% ifequal user_page.paginator.num_pages user_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'user_index' %}?page={{ user_page.paginator.num_pages }}"> >> </a>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

@@ -1,0 +1,47 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_report.html" %}
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+
+    <script type="text/javascript">
+        $(function() {
+            $('table').dwGrid({
+                
+            });
+        });
+    </script>
+
+    <div class="container-fluid dw-shell-view">
+    
+        <div class="page-header">
+            <h4>{{ page_module }} | <small>{{ page_title }}</small></h4>
+        </div>
+    	
+    	<table class="table table-bordered table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse">{% trans "TYPE" %}</th>
+                    <th class="no-responsive dw-text-middle">{% trans "NAME" %}</th>
+                    <th class="col-collapse">{% trans "REGISTERED" %}</th>
+                    <th class="col-collapse">{% trans "MODIFIED" %}</th> 
+                </tr>
+            </thead>
+            <tbody>
+    			{% for d in locality_list %}
+                    <tr>
+        				<td>{{ forloop.counter }}</td>
+                        <td>{{ d.locality_type.name }}</td>
+                        <td>{{ d.name }}</td>
+                        <td>{{ d.registered_at|date:"d-m-Y H:i:s"  }}</td>
+                        <td>{{ d.modified_in|date:"d-m-Y H:i:s"  }}</td>
+                    </tr>
+    			    {% empty %}
+    				    {% trans "No records found" %}
+    			{% endfor %}
+    		</tbody>
+        </table>
+    </div>
+{% endblock content %}

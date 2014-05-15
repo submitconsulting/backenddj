@@ -1,0 +1,90 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_backend.html" %}
+
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+
+    <div class="container-fluid dw-shell-view">
+        <div class="page-header">
+            <h4>{{ page_module }} | <small>{{ page_title }}</small></h4>
+        </div>
+        <form action="" method="post" id="form" class="dw-validate js-remote dw-form dw-validate form-vertical" data-to="dw-shell-content" name="form">
+            {% csrf_token %}
+            <div class="row-fluid">
+                <div class="span6">
+                        <div class="control-group">
+                            <label class="control-label">{% trans "RUC" %}<span class="req"> *</span></label>
+                            <input id="tax_id" name="tax_id" type="text" value="{{ d.tax_id }}" class="field text input-xlarge input-required mask-pint show-error" required="required">
+                            <p class="help-block"> <span class="help-error" id="err_tax_id"></span></p>
+                        </div>
+                    </div>
+            </div>
+                
+            <div class="row-fluid">
+                    <div class="span6">
+                        <div class="control-group">
+                            <label class="control-label">{% trans "NAME" %}<span class="req"> *</span></label>
+                            <input id="name" name="name" type="text" value="{{ d.name }}" class="field text input-xlarge input-required mask-alphanum show-error" required="required">
+                            <p class="help-block"> <span class="help-error" id="err_name"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="span6">
+                        <div class="control-group">
+                            <label class="control-label">{% trans "TIPO ORGANIZACION" %}<span class="req"> *</span></label>
+                            <select id="type_e" name="type_e"  class="field select input-xlarge input-required input-list show-errors" required="required">
+                                    <option value=""></option>
+                                    {% for key,value in TYPES %}
+                                        <option value="{{ key }}" {% if d.type_e == key %} selected {%endif%}>{{ value }}</option>
+                                    {% endfor %}
+                                </select>
+                                <p class="help-block"> <span class="help-error" id="err_type_e"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row-fluid">
+                        <div class="span6">
+                            <div class="control-group">
+                                <label class="control-label">{% trans "PLAN" %}<span class="req"> *</span></label>
+                                {% if d.solution not in solution_list %}
+                                        {{ d.solution.name }}<br>
+                                {% endif %}
+                                <select id="solution_id" name="solution_id"  class="field select input-xlarge input-required input-list show-errors" required="required">
+                                    <option value=""></option>
+                                    {% for solution in solution_list %}
+                                        <option value="{{ solution.id }}" {% if d.solution == solution %} selected {%endif%}>{{ solution.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <p class="help-block"> <span class="help-error" id="err_solution_id"></span></p>
+                            </div>
+                        </div>
+                       
+                 
+                </div>
+            
+            
+            <div class="row-fluid">
+                <div class="form-actions">
+
+                    <button type="submit" class="btn btn-success dw-text-bold" title="Guardar registro">
+                        <i class="btn-icon-only icon-save"></i> <span class="hidden-phone">{% trans "SAVE" %}</span>
+                    </button>
+
+                    <button type="button"  class="btn btn-info dw-text-bold" title="Limpiar formulario" onclick="document.getElementById('form').reset();">
+                        <i class="btn-icon-only icon-undo"></i> <span class="hidden-phone">{% trans "RESET" %}</span>
+                    </button>
+
+                    <a href="{% url 'enterprise_index' %}"  class="btn dw-spinner dw-ajax btn-danger dw-text-bold" title="Cancelar operación">
+                        <i class="btn-icon-only icon-ban-circle"></i> <span class="hidden-phone">{% trans "CANCEL" %}</span>
+                    </a>
+
+                 </div>
+             </div>
+             
+        </form>
+    </div>
+{% endblock content %}

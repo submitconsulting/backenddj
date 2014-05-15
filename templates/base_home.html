@@ -1,0 +1,70 @@
+{% load staticfiles %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}DjBM{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="noindex,nofollow" />
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap/default/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/backend/style.css' %}">
+    <style type="text/css">
+            .row-fluid .span4 { font-size: 14px;}
+    </style>
+    <script src="{% static 'js/tb/jquery.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery.kumbiaphp.js' %}"></script>
+    <script src="{% static 'js/utils/var.js' %}"></script>
+  </head> 
+
+  <body style="padding-top: 40px !important; font-family: Play,Lucila,Verdana,sans-serif;">
+        <div class="navbar navbar-fixed-top user-nav">
+            {% include "partials/header.html" %}
+        </div>
+
+        <div id="dw-shell-load">
+            <div id="dw-shell-content" class="container-fluid">
+
+
+        {% block content %}
+
+        {% endblock content %}
+      </div>
+    </div> <!-- /dw-shell-load -->
+
+
+    <!--
+    ================================================== 
+    <footer class="footer">
+      <div class="containerx">
+        <div class="row-fluid" >
+                <div class="span2"> 
+
+                    <span class="label label-success">Submit Consulting</span>
+                </div>
+                <div class="span2" style="vertical-align: middle;">
+                    <span class="label label-success">Iglesia Adventista del 7mo Día</span>
+                  </div>
+                <div class="span2">
+                    <span class="label label-success">Universidad Peruana Unión</span>
+                </div>
+                <div class="span2" >
+                    <span class="label label-success">EAP Ing. Sistemas - UPeU Juliaca</span>
+                </div>
+                <div class="span2" >
+                    <span class="label label-success">Grupo Innop</span>
+                </div>
+        </div>
+       </div>
+    </footer>
+    -->
+    
+    
+  </body>
+</html>

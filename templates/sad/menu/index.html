@@ -1,0 +1,136 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_backend.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+    {% load app_security %}
+
+    <script type="text/javascript">
+    $(function() {
+        //alert(getCookie('csrftoken'));
+        //alert($( "#csrfmiddlewaretoken" ).val());
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE }}',
+            form_search: true,
+            form_action: "{% url 'menu_index' field value %}",
+            form_load_data : 'dw-shell-content',
+            order_attr: 'class="dw-ajax dw-spinner"',
+            order_action: "{% url 'menu_index' field value %}"
+
+        });
+    });
+</script>
+
+    
+<div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }} </small></h4>
+    </div>
+    
+	<div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <a href="{% url 'menu_add' %}" class="btn dw-spinner dw-ajax btn-success dw-text-bold" title="{% trans "Agregar menu." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "NEW" %}</span></a>
+
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+		<table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse" data-search="module">{% trans "MODULO" %}</th>
+                    <th class="col-collapse" data-search="pos">{% trans "POSICION" %}</th>
+                    <th class="col-collapse">{% trans "PADRE" %}</th>
+                    <th class="col-collapse" data-search="title">{% trans "TITULO" %}</th>
+                    <th class="col-collapse">{% trans "RECURSO/PERMISO" %}</th>
+                    <th class="col-collapse" data-search="url">{% trans "URL" %}</th>
+                    <th class="col-collapse" data-search="icon">{% trans "ICONO" %}</th>
+                    
+                    <th class="col-collapse" data-search="is_active">{% trans "ACTIVO" %}</th>
+                    <th class="btn-actions no-responsive" style="width: 150px;">{% trans "ACTIONS" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+			{% for d in menu_page %}
+				<tr>
+					<td>{{ menu_page.start_index|add:forloop.counter0 }}</td>
+                    <td><span class="label label-success">{{ d.get_module_display }}</span></td>
+                	<td>{{ d.pos }}</td>
+                	<td>{{ d.parent.title }}</td>
+                    <td>{{ d.title }}</td>
+                    <td>{{ d.permission.content_type.app_label }}{{ d.permission_id|yesno:'.,'}}{{ d.permission.codename }}</td>
+                    <td>{{ d.url }}</td>
+                    <td>{{ d.icon }}</td>
+                    
+                    <td><span class="label label-success">{{ d.is_active|yesno:'SI,NO' }}</span></td>
+                    <td>
+                    	
+						<a href="{% url 'menu_edit' d.id|key:'menu_upd' %}" class="btn dw-spinner dw-ajax btn btn-small btn-info dw-text-bold" title="{% trans "Update menu." %}" rel="tooltip"> <i class="btn-icon-only icon-edit"></i></a>
+
+                        {% if d.is_active %}
+                            <a href="{% url 'menu_state' 'inactivar' d.id|key:'menu_inactivar' %}" class="btn dw-spinner dw-ajax btn btn-small btn-success dw-text-bold" title="{% trans "Inactivar menu." %}" rel="tooltip"> <i class="btn-icon-only icon-flag"></i></a>
+                        {% else %}
+                            <a href="{% url 'menu_state' 'reactivar' d.id|key:'menu_reactivar' %}" class="btn dw-spinner dw-ajax btn btn-small btn-success dw-text-bold" title="{% trans "Reactivar menu." %}" rel="tooltip"> <i class="btn-icon-only icon-flag"></i></a>
+                        {% endif %}
+
+                        <a href="{% url 'menu_delete' d.id|key:'menu_del' %}" class="btn dw-spinner dw-ajax btn btn-small btn-danger js-confirm dw-text-bold" confirm-title="{% trans "Delete menu?." %}" confirm-body="{% trans "It is safe to remove." %}<br/>{% trans "Remember that this operation can not be reversed." %}" title="{% trans "Delete menu?." %}" rel="tooltip"> <i class="btn-icon-only icon-ban-circle"></i></a>
+
+                    </td>
+                 </tr>
+				{% empty %}
+					{% trans "No records found" %}
+			{% endfor %}
+			</tbody>
+        </table>
+	</div>
+
+    <div class="pagination" style="height: auto !important; margin-top: 10px;">
+            <p>
+                {% trans "Total records found" %}: <b>{{ menu_page.paginator.count }}</b>
+                
+                ({% blocktrans with menu_page.number as number count menu_page.paginator.num_pages as num_pages %}{{number}}/{{num_pages}} page{% plural %}{{number}}/{{num_pages}} pages{% endblocktrans %})
+            </p>
+            
+    </div>
+    <div class="pagination">
+        <div class="pagination-left">
+            <ul>
+                
+                {% if menu_page.has_previous %}
+                    <li {% ifequal 1 menu_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'menu_index' %}?page=1"> << </a>
+                    </li>
+                    
+                    <li {% ifequal 1 menu_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'menu_index' %}?page={{ menu_page.previous_page_number }}"> < </a>
+                    </li>
+                {% endif %}
+                
+
+                {% for i in menu_page.paginator.page_range %}
+                    <li {% ifequal i menu_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'menu_index' field value order %}?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                
+                {% if menu_page.has_next %}
+                    <li {% ifequal menu_page.paginator.num_pages menu_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'menu_index' %}?page={{ menu_page.next_page_number }}"> > </a>
+                    </li>
+
+                    <li {% ifequal menu_page.paginator.num_pages menu_page.number %} class="active" {% endifequal %}>
+                        <a class="dw-ajax dw-spinner" href="{% url 'menu_index' %}?page={{ menu_page.paginator.num_pages }}"> >> </a>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </div>
+    {{ user.username|default:"Aún no estas registrado" }}
+    
+
+</div>
+{% endblock content %}

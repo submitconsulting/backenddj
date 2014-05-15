@@ -1,0 +1,18 @@
+[2014-05-08 10:55:18,115][ERROR] [sistema] [/space/association/edit_current/][admin][127.0.0.1] Asociación no seleccionada o no se encuentra en la base de datos. 
+[2014-05-08 10:55:19,907][ERROR] [sistema] [/space/enterprise/index/][admin][127.0.0.1] Asociación no seleccionada o no se encuentra en la base de datos. 
+[2014-05-08 10:55:20,832][ERROR] [sistema] [/space/enterprise/edit_current/][admin][127.0.0.1] Empresa no seleccionada o no se encuentra en la base de datos. 
+[2014-05-08 10:55:21,256][ERROR] [sistema] [/space/headquar/index/][admin][127.0.0.1] Empresa no seleccionada o no se encuentra en la base de datos. 
+[2014-05-08 10:55:21,688][ERROR] [sistema] [/sad/user/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-08 11:18:46,216][WARNING] [sistema] [/sad/module/index/][AnonymousUser][127.0.0.1] Tu no estás autenticado 
+[2014-05-08 12:30:40,523][ERROR] [sistema] [/space/association/edit_current/][admin][127.0.0.1] Asociación no seleccionada o no se encuentra en la base de datos. 
+[2014-05-08 12:30:42,486][ERROR] [sistema] [/space/enterprise/index/][admin][127.0.0.1] Asociación no seleccionada o no se encuentra en la base de datos. 
+[2014-05-08 12:30:42,867][ERROR] [sistema] [/space/enterprise/edit_current/][admin][127.0.0.1] Empresa no seleccionada o no se encuentra en la base de datos. 
+[2014-05-08 12:30:43,301][ERROR] [sistema] [/space/headquar/index/][admin][127.0.0.1] Empresa no seleccionada o no se encuentra en la base de datos. 
+[2014-05-08 12:30:43,697][ERROR] [sistema] [/sad/user/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-08 12:30:48,039][ERROR] [sistema] [/sad/user/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-08 12:30:49,305][ERROR] [sistema] [/sad/user/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-08 12:30:50,220][ERROR] [sistema] [/sad/user/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-08 12:30:51,028][ERROR] [sistema] [/sad/user/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-08 13:38:06,933][WARNING] [sistema] [/sad/access/index/][AnonymousUser][127.0.0.1] Tu no estás autenticado 
+[2014-05-08 13:38:09,766][WARNING] [sistema] [/sad/audit/index/][AnonymousUser][127.0.0.1] Tu no estás autenticado 
+[2014-05-08 13:38:20,700][WARNING] [sistema] [/sad/audit/index/][AnonymousUser][127.0.0.1] Tu no estás autenticado 

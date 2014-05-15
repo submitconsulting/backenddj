@@ -1,0 +1,10 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_mod_ventas.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+
+        <p>Módulo de Ventas Dashboard Page</p>
+{% endblock %}

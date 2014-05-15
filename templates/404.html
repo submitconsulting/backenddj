@@ -1,0 +1,13 @@
+{% extends "base_home.html" %}
+{% block title %} Page Not found {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+    
+    <div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }} </small></h4>
+     </div>
+     <p>This is not the page you were looking for.</p>
+    </div>
+{% endblock content %}

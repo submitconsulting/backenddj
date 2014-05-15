@@ -1,0 +1,81 @@
+{% extends request.is_ajax|yesno:"base_ajax.html,base_authenticated.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% block title %} {{ page_title }} {% endblock %}
+{% block content %}
+    {% load notify %}
+    {% get_notify request %}
+
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            language: '{{ LANGUAGE_CODE }}',
+            form_search: true,
+            form_action: "{% url 'choice_headquar' field value %}",
+            form_load_data : 'dw-shell-content',
+        });
+    });
+</script>
+
+    <div class="container-fluid dw-shell-view">
+     <div class="page-header">
+        <h4>{{ page_module }} | <small>{{ page_title }}</small></h4>
+    </div>
+    
+	<div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <a href="{% url 'add_enterprise' %}" class="btn dw-spinner btn-success dw-text-bold" title="{% trans "Agregar empresa." %}"><i class="btn-icon-only icon-check"></i> <span class="hidden-phone">{% trans "AGREGUE SU PROPIA EMPRESA" %}</span></a>
+            {% if user.is_superuser %}
+                <a href="{% url 'mod_backend_dashboard' %}" class="btn dw-spinner dw-text-bold" title="{% trans "Ir al módulo backend manager." %}"><i class="btn-icon-only icon-key"></i> <span class="hidden-phone">{% trans "IR ADMIN" %}</span></a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+		<table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="col-collapse" data-search="association__name">{% trans "ASOCIACIÓN" %}</th>
+                    <th class="col-collapse" data-search="enterprise__name">{% trans "EMPRESA" %}</th>
+                    <th class="col-collapse">{% trans "SEDE" %}</th>
+                    <th class="col-collapse">{% trans "PERFILES" %}</th>
+                    <th class="col-collapse">{% trans "ELEGIR MODULO" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+			{% for d in headquar_list %}
+				<tr>
+					<td>{{ forloop.counter }}</td>
+                	<td>{{ d.association.name }} 
+                        <span class="label label-success">{{ d.association.is_active|yesno:',off' }}</span>
+                    </td>
+                	<td>{{ d.enterprise.name }} 
+                        <span class="label label-success">{{ d.enterprise.is_active|yesno:',off' }}</span>
+                    </td>
+                	<td>{{ d.headquar.name }} 
+                        <span class="label label-success">{{ d.headquar.is_active|yesno:',off' }}</span>
+                    </td>
+                    <td>
+                        {{ d.groups|join:', ' }} 
+                    </td>
+                    <td>{% for d2 in d.modules %}
+                        <a href="{% url 'load_access' d.headquar.id d2.id %}" class="btn dw-spinner btn btn-small btn-info dw-text-bold" title="{% trans "Elegir." %}" rel="tooltip"> {{ d2.name }} </a>
+
+                        {% endfor %}
+                    </td>
+                    
+                 </tr>
+				{% empty %}
+					{% trans "No records found" %}<br>
+                    {% trans "Usuario sin sede asignado" %}
+			{% endfor %}
+			</tbody>
+        </table>
+	</div>
+
+
+
+
+</div>
+{% endblock %}

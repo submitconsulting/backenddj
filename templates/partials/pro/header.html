@@ -1,0 +1,155 @@
+{% load staticfiles %}
+{% load i18n %}
+{% load user_menu %}
+<script type="text/javascript">
+    $(function() {        
+        $('#codigo').typeahead({
+          source: function (query, process) {
+                $.ajax({
+                    type: "get",
+                    url: '{% url 'employee_json_by_filter' %}',                   
+                    data: 'filter=' + query,
+                    cache: true,
+                    dataType: 'json',
+                    success: function (data) {
+                        datos = new Array();                        
+                        ids    = new Array();
+                        cods = new Array();
+                        descs = new Array();
+                        pvs = new Array();
+ 
+                        for (var i= 0; i < data.length; i++) {
+                            var city = data[i]; 
+                            datos[i] = city.codigo + " - " + city.descripcion;  
+                            ids[i]    = city.id;
+                            descs[i]    = city.descripcion;
+                            cods[i]    = city.codigo;
+                            pvs[i]    = city.precio_venta;
+                        }
+                        if(data.length<=0){
+
+                            $('#id_entity').val("");
+                            $('#codigo').val("'"+$('#codigo').val()+"' no se encuentra");
+                            $('#codigo').select();
+                            //$('#descripcion').text("");
+                            //$('#precio_venta').val("");                            
+                        }
+                        return process(datos);
+                    }
+                });
+            },
+            updater: function (item) {
+             for ( var i = 0; i < datos.length; i++) {
+                    if(datos[i] == item){
+                      
+                        $('#id_entity').val(ids[i]);
+                        //$('#precio_venta').val(pvs[i]);"+ids[i]+"
+
+                        $('#codigo').val(cods[i]);
+                        //$('#descripcion').text(descs[i]);
+                        
+                        window.location.href ="/rrhh/employee/choice/"+ids[i]+"/";
+                        break;
+                    }
+                }
+                return item;
+            },
+
+            items:8
+        });        
+    });
+</script>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div>
+      <button type="button" class="btn btn-navbar btn-list-phone" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+  
+  <div class="row-fluid" >
+                <div class="span2"> 
+<a href="{% url 'mod_pro_dashboard' %}" class="xdw-ajax dw-spinner" ><img src="{% static 'img/modules/profesional.png' %}" alt="PROJECT"  style="height: 35px;" /></a>
+          
+
+                </div>
+                <div class="span3" style="vertical-align: middle;">
+                      
+      
+      {% if user.is_authenticated %}
+        {% url 'employee_index' as get_url %}
+        {% get_grupos request get_url %}
+      {% endif %}
+
+ 
+                  </div>
+                <div class="span3">
+
+<input id="id_entity" name="id_entity" type="hidden"/> 
+<input id="codigo" type="text" data-provide="typeahead" class="span search-query icon-search" placeholder="Buscar..."  autocomplete="off"/> 
+
+ 
+
+                    
+                </div>
+                <div class="span2" >
+
+  <div class="nav-collapse collapse">
+    <ul class="nav">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Item 1</a></li>
+          <li><a href="#">Item 2</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+
+
+                </div>
+                <div class="span2">
+                    
+      <ul class="nav pull-right">
+      {% if user.is_authenticated %}
+      <li class="dropdown">
+        <a href="/accounts/login/" class="dropdown-toggle" data-toggle="dropdown">
+          <i class="icon-user"></i>
+          {{ user.username }}
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'choice_headquar' %}"  class="" >Elegir empresa</a></li>
+          <li class="divider"></li>
+          <li><a href="/accounts/profile/edit/"  class="dw-ajax dw-spinner" >Perfil</a></li>
+          <li class="divider"></li>
+          <li><a href="/accounts/logout/"  class="no-load" ><i class="icon-off icon-expand"></i> Salir</a></li>
+        </ul>
+      </li>
+
+      {% else %}
+      <li><a href="/accounts/login/"><i class="icon-user"> </i> Login</a></li>
+      {% endif %}
+      </ul>
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+    </div>
+
+    <div class="hidden-desktop">
+            <div class="nav-collapse collapse">
+              <!-- { % phone request % } -->
+            </div>
+    </div><!-- fin contenedor menú-->
+
+  </div>
+</div>
