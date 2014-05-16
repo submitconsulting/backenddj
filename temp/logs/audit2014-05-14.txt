@@ -1,0 +1,5 @@
+[2014-05-15 22:28:37,459][ERROR] [sistema] [/maestros/producto/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-15 22:28:52,569][ERROR] [sistema] [/maestros/producto/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-15 22:29:08,377][ERROR] [sistema] [/maestros/producto/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-15 22:29:24,453][ERROR] [sistema] [/maestros/producto/index/][admin][127.0.0.1] Sede no seleccionado o no se encuentra en la base de datos. 
+[2014-05-15 22:30:21,673][ERROR] [sistema] [/accounts/add_enterprise/][admin][127.0.0.1] 'module' object has no attribute 'choice_headquar' 

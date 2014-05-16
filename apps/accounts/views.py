@@ -110,7 +110,7 @@ def add_enterprise(request):
                             user_profile_headquar.group = group
                             user_profile_headquar.save()
             Message.info(request, ("Empresa <b>%(name)s</b> ha sido registrado correctamente!.") % {"name":d.enterprise_name})
-            return Redirect.to(request, "/home/choice_headquar/")
+            return Redirect.to(request, "/accounts/choice_headquar/")
         except Exception, e:
             transaction.savepoint_rollback(sid)
             Message.error(request, e)
@@ -130,7 +130,7 @@ def add_enterprise(request):
 @transaction.atomic
 def signup_sys(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("/home/choice_headquar/")
+        return HttpResponseRedirect("/accounts/choice_headquar/")
     d = Person()
     d.first_name = ""
     d.last_name = ""
@@ -282,12 +282,12 @@ def load_access(request, headquar_id, module_id):
                 headquar = Headquar.objects.get(id=headquar_id)
             except:
                 Message.error(request, ("Sede no seleccionado o no se encuentra en la base de datos."))
-                return Redirect.to(request, "/home/choice_headquar/")
+                return Redirect.to(request, "/accounts/choice_headquar/")
             try:
                 module = Module.objects.get(id=module_id)
             except:
                 Message.error(request, ("Módulo no seleccionado o no se encuentra en la base de datos."))
-                return Redirect.to(request, "/home/choice_headquar/")
+                return Redirect.to(request, "/accounts/choice_headquar/")
 
             if not request.user.is_superuser:  # vovler a verificar si tiene permisos
                 # obteniendo las sedes a la cual tiene acceso
@@ -331,10 +331,10 @@ def load_access(request, headquar_id, module_id):
             # TODO agregue aqui su nuevo modulo
             else:
                 Message.error(request, "Módulo no definido")
-                return HttpResponseRedirect("/home/choice_headquar/")
+                return HttpResponseRedirect("/accounts/choice_headquar/")
         except Exception, e:
             Message.error(request, e)
-        return HttpResponseRedirect("/home/choice_headquar/")
+        return HttpResponseRedirect("/accounts/choice_headquar/")
         # return HttpResponse("Ocurrió un grave error, comunique al administrador del sistema")
 
 def login_sys(request):

@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname((__file__)))
 SECRET_KEY = '#zqk3o8k!^3j)5g5r=rlt#xz@km+a7f5og$9(&_$69v@4^%4uh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True #False
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -216,9 +216,9 @@ CACHES = {
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'asullom@gmail.com'
-EMAIL_HOST_PASSWORD = '123xxxxx'
-DEFAULT_FROM_EMAIL = 'asullom@gmail.com'
+EMAIL_HOST_USER = 'asullom@gmail.com' #cambie por el suyo
+EMAIL_HOST_PASSWORD = '1234567x' #cambie por el suyo
+DEFAULT_FROM_EMAIL = 'asullom@gmail.com' #cambie por el suyo
 
 ###########
 # LOGGING #
